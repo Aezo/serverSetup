@@ -1,0 +1,9 @@
+#!/bin/bash
+
+FILE_COUNT=$(ls | wc -l)
+
+if [ $FILE_COUNT -gt 100 ]; then
+  ls | sort -n | head && echo ... && ls | sort -n | tail && echo '----------' && echo "Total $FILE_COUNT files"
+else
+	ls
+fi

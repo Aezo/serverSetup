@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "$1" ]; then
+  LINE_COUNT=$(cat $1 | wc -l)
+
+  if [ $LINE_COUNT -gt 100 ]; then
+    cat $1 | head && echo ... && cat $1 | tail && echo '----------' && echo "Total $LINE_COUNT lines"
+  else
+	  cat
+  fi
+else
+  echo "cats needs a single argument to run."
+fi
