@@ -1,0 +1,34 @@
+#! /bin/bash
+
+REMOTE_SERVER_IP=$1;
+REMOTE_FOLDER_NAME=$2;
+USERNAME='aezo'
+
+if [ $REMOTE_SERVER_IP ] && [ $REMOTE_FOLDER_NAME ]; then
+
+	files=$(git diff --name-only);
+	sync_commands=()
+
+	for file in $files
+	do
+		command=$(echo $file | perl -pe 's/(.+)/scp -F \/dev\/null .\/$1 '$USERNAME'\@'$REMOTE_SERVER_IP':~\/'$REMOTE_FOLDER_NAME'\/$1/g' | perl -pe 's/ /SPACE22SPACE59SPACE/g')
+		sync_commands+=($command)
+	done
+
+	for command in ${sync_commands[*]}
+	do
+		command=$(echo $command | perl -pe 's/SPACE22SPACE59SPACE/ /g');
+		echo $command;
+		$command;
+	done
+
+	for file in $files
+	do
+		command="git add $file";
+		echo $command;
+		$command;
+	done
+
+else
+	echo "Two arguments REMOTE_SERVER_IP REMOTE_FOLDER_NAME needed.";
+fi
